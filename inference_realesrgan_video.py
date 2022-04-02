@@ -111,7 +111,7 @@ def main():
         frame_folder = os.path.join('tmp_frames', video_name)
         os.makedirs(frame_folder, exist_ok=True)
         # use ffmpeg to extract frames
-        os.system(f'ffmpeg -i {args.input} -qscale:v 1 -qmin 1 -qmax 1 -vsync 0  {frame_folder}/frame%08d.png')
+        os.system(f'ffmpeg -i {args.input} -qscale:v 1 -qmin 1 -qmax 1 -vsync 0  {frame_folder}/frame%08d.jpg')
         # get image path list
         paths = sorted(glob.glob(os.path.join(frame_folder, '*')))
         if args.video:
@@ -180,20 +180,20 @@ def main():
     pbar.close()
 
     # merge frames to video
-    if args.video:
-        video_save_path = os.path.join(args.output, f'{video_name}_{args.suffix}.mp4')
-        if args.audio:
-            os.system(
-                f'ffmpeg -r {args.fps} -i {save_frame_folder}/frame%08d_out.{extension} -i {args.input}'
-                f' -map 0:v:0 -map 1:a:0 -c:a copy -c:v libx264 -r {args.fps} -pix_fmt yuv420p  {video_save_path}')
-        else:
-            os.system(f'ffmpeg -r {args.fps} -i {save_frame_folder}/frame%08d_out.{extension} '
-                      f'-c:v libx264 -r {args.fps} -pix_fmt yuv420p {video_save_path}')
+    #if args.video:
+        #video_save_path = os.path.join(args.output, f'{video_name}_{args.suffix}.mp4')
+        #if args.audio:
+            #os.system(
+                #f'ffmpeg -r {args.fps} -i {save_frame_folder}/frame%08d_out.{extension} -i {args.input}'
+                #f' -map 0:v:0 -map 1:a:0 -c:a copy -c:v libx264 -r {args.fps} -pix_fmt yuv420p  {video_save_path}')
+        #else:
+            #os.system(f'ffmpeg -r {args.fps} -i {save_frame_folder}/frame%08d_out.{extension} '
+                      #f'-c:v libx264 -r {args.fps} -pix_fmt yuv420p {video_save_path}')
 
         # delete tmp file
-        shutil.rmtree(save_frame_folder)
-        if os.path.isdir(frame_folder):
-            shutil.rmtree(frame_folder)
+        #shutil.rmtree(save_frame_folder)
+        #if os.path.isdir(frame_folder):
+            #shutil.rmtree(frame_folder)
 
 
 if __name__ == '__main__':
